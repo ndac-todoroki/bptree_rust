@@ -1,9 +1,7 @@
 use bptree::BPlusTree;
-// use bptree::bptree; // ::{NodeType, ExternalNode, InternalNode}
 
 fn main() {
-   println!("Hello, world!");
-
+   // N=5のB+-Treeを作る
    let mut tree = BPlusTree::new(5);
 
    println!("{}", tree);
@@ -13,6 +11,7 @@ fn main() {
       println!("{}", tree);
    }
 
+   // もう一度初期化，今度は逆順で数字を入れる
    let mut tree = BPlusTree::new(5);
 
    println!("{}", tree);
