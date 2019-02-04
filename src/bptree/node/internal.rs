@@ -192,6 +192,7 @@ impl Node for InternalNode {
 }
 
 #[cfg(test)]
+#[allow(unused_must_use)]
 mod tests {
    use super::super::{ExternalNode, Node, NodeType};
    use super::*;
