@@ -104,10 +104,11 @@ impl Node for InternalNode {
                Ok(Full) => {
                   let (former, latter) = pointers[position].meiosis();
 
-                  // 多分 Vector::remove -> Vector::insert するより mem::replace のほうが速い
-                  mem::replace(&mut self.keys[position], *latter.first_key());
-                  self.keys.insert(position, *greater.first_key());
+                  // 分裂した子の大きい方のキーを追加
+                  self.keys.insert(position, *latter.first_key());
 
+                  // ポインタの置き換え，追加
+                  // 多分 Vector::remove -> Vector::insert するより mem::replace のほうが速い
                   mem::replace(&mut pointers[position], latter);
                   pointers.insert(position, former);
 
