@@ -2,13 +2,48 @@
 
 use bptree::BPlusTree;
 use std::io;
+use rand::prelude::*;
+use time::PreciseTime;
 
 fn main() {
+   println!("1->1000M");
    // N=5のB+-Treeを作る
    let mut tree = BPlusTree::new(5);
+   let start = PreciseTime::now();
+   for i in 1..=10000000 {
+      tree.insert(i, i);
+   }
+   let end = PreciseTime::now();
+   println!("{}", tree);
+   println!("{} seconds.", start.to(end));
 
+   println!("1000M->1");
+   let mut tree = BPlusTree::new(5);
+   let start = PreciseTime::now();
+   for i in (1..=10000000).dec() {
+      tree.insert(i, i);
+   }
+   let end = PreciseTime::now();
+   println!("{}", tree);
+   println!("{} seconds.", start.to(end));
+
+   println!("1000M->1");
+   let mut tree = BPlusTree::new(5);
+   let between = Uniform::from(1..=10000000);
+   let mut rng = rand::thread_rng();
+   let start = PreciseTime::now();
+   for _ in 1..=10000000 {
+      let i = between.sample(&mut rng);
+      tree.insert(i, i);
+   }
+   let end = PreciseTime::now();
+   println!("{}", tree);
+   println!("{} seconds.", start.to(end));
+
+
+   // user input based tree
+   let mut tree = BPlusTree::new(5);
    println!("Enter key and value! eg. `1 100`");
-
    loop {
       let mut input_text = String::new();
       io::stdin()
