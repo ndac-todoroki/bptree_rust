@@ -4,6 +4,7 @@ use bptree::BPlusTree;
 use std::io;
 use std::time::{Duration, Instant};
 use rand::prelude::*;
+use rand::distributions::{Distribution, Uniform};
 
 fn main() {
    println!("1->1000M");
@@ -15,7 +16,7 @@ fn main() {
    }
    let end = Instant::now();
    println!("{}", tree);
-   println!("TIME: {}s + {}us", end.duration_since(start).as_secs, end.duration_since(start).subsec_micros);
+   println!("TIME: {}s + {}us", end.duration_since(start).as_secs(), end.duration_since(start).subsec_micros());
 
    println!("1000M->1");
    let mut tree = BPlusTree::new(5);
@@ -25,7 +26,7 @@ fn main() {
    }
    let end = Instant::now();
    println!("{}", tree);
-   println!("TIME: {}s + {}us", end.duration_since(start).as_secs, end.duration_since(start).subsec_micros);
+   println!("TIME: {}s + {}us", end.duration_since(start).as_secs(), end.duration_since(start).subsec_micros());
 
    println!("1000M->1");
    let mut tree = BPlusTree::new(5);
@@ -38,7 +39,7 @@ fn main() {
    }
    let end = Instant::now();
    println!("{}", tree);
-   println!("TIME: {}s + {}us", end.duration_since(start).as_secs, end.duration_since(start).subsec_micros);
+   println!("TIME: {}s + {}us", end.duration_since(start).as_secs(), end.duration_since(start).subsec_micros());
 
 
    // user input based tree
