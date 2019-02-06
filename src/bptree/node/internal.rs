@@ -47,8 +47,7 @@ impl InternalNode {
    }
 
    /// Creates a new `InternalNode` by passing two child node `Box`es.
-   pub fn new_by_nodes(node_size: usize, node1: Box<NodeType>, 
-node2: Box<NodeType>, seperator_key: usize) -> Self {
+   pub fn new_by_nodes(node_size: usize, node1: Box<NodeType>, node2: Box<NodeType>, seperator_key: usize) -> Self {
       InternalNode {
          node_size,
          keys: vec![seperator_key],
