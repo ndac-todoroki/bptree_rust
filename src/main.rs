@@ -2,43 +2,43 @@
 
 use bptree::BPlusTree;
 use std::io;
+use std::time::{Duration, Instant};
 use rand::prelude::*;
-use time::PreciseTime;
 
 fn main() {
    println!("1->1000M");
    // N=5のB+-Treeを作る
    let mut tree = BPlusTree::new(5);
-   let start = PreciseTime::now();
+   let start = Instant::now();
    for i in 1..=10000000 {
       tree.insert(i, i);
    }
-   let end = PreciseTime::now();
+   let end = Instant::now();
    println!("{}", tree);
-   println!("{} seconds.", start.to(end));
+   println!("TIME: {}s + {}us", end.duration_since(start).as_secs, end.duration_since(start).subsec_micros);
 
    println!("1000M->1");
    let mut tree = BPlusTree::new(5);
-   let start = PreciseTime::now();
+   let start = Instant::now();
    for i in (1..=10000000).dec() {
       tree.insert(i, i);
    }
-   let end = PreciseTime::now();
+   let end = Instant::now();
    println!("{}", tree);
-   println!("{} seconds.", start.to(end));
+   println!("TIME: {}s + {}us", end.duration_since(start).as_secs, end.duration_since(start).subsec_micros);
 
    println!("1000M->1");
    let mut tree = BPlusTree::new(5);
    let between = Uniform::from(1..=10000000);
    let mut rng = rand::thread_rng();
-   let start = PreciseTime::now();
+   let start = Instant::now();
    for _ in 1..=10000000 {
       let i = between.sample(&mut rng);
       tree.insert(i, i);
    }
-   let end = PreciseTime::now();
+   let end = Instant::now();
    println!("{}", tree);
-   println!("{} seconds.", start.to(end));
+   println!("TIME: {}s + {}us", end.duration_since(start).as_secs, end.duration_since(start).subsec_micros);
 
 
    // user input based tree
