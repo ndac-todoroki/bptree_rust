@@ -21,7 +21,7 @@ pub trait Node {
    fn insert(&mut self, key: Key, value: Value) -> Result<InsertResult, &str>;
 
    /// A node must _meiosis_ when it becomes full. ※meiosis == 減数分裂
-   fn meiosis(&self) -> (Box<NodeType>, Box<NodeType>);
+   fn meiosis(&self) -> (Box<NodeType>, Box<NodeType>, usize);
 }
 
 #[derive(Debug, Clone)]
@@ -67,7 +67,7 @@ impl Node for NodeType {
          NodeType::Ext(node) => node.insert(key, value),
       }
    }
-   fn meiosis(&self) -> (Box<NodeType>, Box<NodeType>) {
+   fn meiosis(&self) -> (Box<NodeType>, Box<NodeType>, usize) {
       match self {
          NodeType::Int(node) => node.meiosis(),
          NodeType::Ext(node) => node.meiosis(),

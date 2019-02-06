@@ -9,6 +9,7 @@ use rand::distributions::{Distribution, Uniform};
 const N: usize = 1_0000;
 
 fn main() {
+   /*
    println!("1->{}", N);
    // N=5のB+-Treeを作る
    let mut tree = BPlusTree::new(5);
@@ -43,6 +44,7 @@ fn main() {
    // println!("{}", tree);
    println!("TIME: {}s + {}us", end.duration_since(start).as_secs(), end.duration_since(start).subsec_micros());
 
+   */
 
    // user input based tree
    let mut tree = BPlusTree::new(5);

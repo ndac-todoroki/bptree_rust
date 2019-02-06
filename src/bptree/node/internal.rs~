@@ -173,7 +173,7 @@ impl Node for InternalNode {
          let (fk, lk) = self.keys.split_at(div_at);
          let (lkf, lks) = lk.split_first().unwrap();
          let (fp, lp) = pointers.split_at(div_at);
-         let (lpf, lps) = lp.split_first().unwrap();
+         let (lpf, lps) = lp.split_last().unwrap();
 
          let former = Self {
             node_size: self.node_size,

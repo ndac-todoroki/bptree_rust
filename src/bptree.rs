@@ -74,8 +74,9 @@ impl BPlusTree {
       match self.root.insert(key, value) {
          Ok(Open) => Ok(()),
          Ok(Full) => {
-            let (node1, node2) = self.root.meiosis();
-            let new_root = InternalNode::new_by_nodes(self.node_size, node1, node2);
+            let (node1, node2, key) = self.root.meiosis();
+            let new_root = 
+InternalNode::new_by_nodes(self.node_size, node1, node2, key);
             self.root = NodeType::Int(new_root);
             Ok(())
          },
