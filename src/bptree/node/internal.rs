@@ -48,10 +48,13 @@ impl InternalNode {
 
    /// Creates a new `InternalNode` by passing two child node `Box`es.
    pub fn new_by_nodes(node_size: usize, node1: Box<NodeType>, node2: Box<NodeType>, seperator_key: usize) -> Self {
+      let mut pointers = Vec::with_capacity(node_size);
+      pointers.push(node1);
+
       InternalNode {
          node_size,
          keys: vec![seperator_key],
-         pointers: RefCell::new(vec![node1]),
+         pointers: RefCell::new(pointers),
          greater: RefCell::new(node2),
       }
    }
@@ -98,7 +101,6 @@ impl Node for InternalNode {
       match child_position {
          Some(position) => {
             let mut pointers = self.pointers.borrow_mut();
-            let greater = self.greater.borrow();
             match pointers[position].insert(key, value) {
                Ok(Open) => Ok(Open),
                Ok(Full) => {
@@ -139,7 +141,6 @@ impl Node for InternalNode {
                   self.keys.push(key);
 
                   self.pointers.borrow_mut().push(former);
-                  //self.greater = 
                   self.greater.replace(latter);
 
                   if self.keys.len() == self.node_size - 1 {
@@ -161,37 +162,50 @@ impl Node for InternalNode {
 
    fn first_key(&self) -> &Key { self.keys.first().unwrap() }
 
+   fn height(&self) -> usize { self.greater.borrow().height() + 1 }
+
    fn meiosis(&self) -> (Box<NodeType>, Box<NodeType>, usize) {
       let pointers = self.pointers.borrow();
       if pointers.len() < 3 || self.keys.len() < 3 {
          panic!()
       } else {
          // 5 >> 1 == 2, 6 >> 1 == 3
-         let div_at = (self.node_size >> 1) - 1;
+         let div_at = self.node_size >> 1;
 
-         let (fk, lk) = self.keys.split_at(div_at);
-         let (lkf, lks) = lk.split_first().unwrap();
-         let (fp, lp) = pointers.split_at(div_at);
-         let (lpf, lps) = lp.split_first().unwrap();
+         let mut keys_n = self.keys.clone();
+         let pointers_n = self.pointers.clone();
+
+         let mut lk_n = keys_n.split_off(div_at);
+         let mut lp_n = (*pointers_n.borrow_mut()).split_off(div_at);
+         lk_n.reserve(self.node_size);
+         lp_n.reserve(self.node_size);
+
+         let fkl = keys_n.pop().unwrap();
+         let fpl = (*pointers_n.borrow_mut()).pop().unwrap();
+
+         // let (fk, lk) = self.keys.split_at(div_at);
+         // let (lkf, lks) = lk.split_first().unwrap();
+         // let (fp, lp) = pointers.split_at(div_at);
+         // let (lpf, lps) = lp.split_first().unwrap();
 
          let former = Self {
             node_size: self.node_size,
-            keys:      fk.to_vec(),
-            pointers:  RefCell::new(fp.to_vec()),
-            greater:   RefCell::new(lpf.to_owned()),
+            keys:      keys_n,
+            pointers:  pointers_n,
+            greater:   RefCell::new(fpl),
          };
 
          let latter = Self {
             node_size: self.node_size,
-            keys:      lks.to_vec(),
-            pointers:  RefCell::new(lps.to_vec()),
+            keys:      lk_n,
+            pointers:  RefCell::new(lp_n),
             greater:   self.greater.to_owned(),
          };
 
          (
             Box::new(NodeType::Int(former)),
             Box::new(NodeType::Int(latter)),
-            *lkf
+            fkl
          )
       }
    }
@@ -256,3 +270,4 @@ mod tests {
       assert_eq!(None, node.lookup(99));
    }
 }
+

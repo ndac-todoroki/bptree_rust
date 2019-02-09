@@ -22,6 +22,9 @@ pub trait Node {
 
    /// A node must _meiosis_ when it becomes full. ※meiosis == 減数分裂
    fn meiosis(&self) -> (Box<NodeType>, Box<NodeType>, usize);
+
+   /// The height of the node.
+   fn height(&self) -> usize;
 }
 
 #[derive(Debug, Clone)]
@@ -71,6 +74,12 @@ impl Node for NodeType {
       match self {
          NodeType::Int(node) => node.meiosis(),
          NodeType::Ext(node) => node.meiosis(),
+      }
+   }
+   fn height(&self) -> usize {
+      match self {
+         NodeType::Int(node) => node.height(),
+         NodeType::Ext(node) => node.height(),
       }
    }
 }

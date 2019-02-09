@@ -38,8 +38,8 @@ impl ExternalNode {
    pub fn new(node_size: usize) -> Self {
       Self {
          node_size,
-         keys: Vec::new(),
-         values: Vec::new(),
+         keys: Vec::with_capacity(node_size),
+         values: Vec::with_capacity(node_size),
          next: None,
       }
    }
@@ -110,20 +110,34 @@ impl Node for ExternalNode {
 
    fn first_key(&self) -> &Key { self.keys.first().unwrap() }
 
+   fn height(&self) -> usize { 1 }
+
    fn meiosis(&self) -> (Box<NodeType>, Box<NodeType>, usize) {
       // on the basis that self is full...
-      let (fk, lk) = self.keys.split_at((self.node_size + 1) / 2);
-      let (fv, lv) = self.values.split_at((self.node_size + 1) / 2);
+      let cut_at = (self.node_size + 1) >> 1;
+
+      let mut fk = self.keys.clone();
+      let mut fv = self.values.clone();
+
+      let mut lk = fk.split_off(cut_at);
+      let mut lv = fv.split_off(cut_at);
+
+      lk.reserve(self.node_size);
+      lv.reserve(self.node_size);
+
+      // let (fk, lk) = self.keys.split_at((self.node_size + 1) >> 1);
+      // let (fv, lv) = self.values.split_at((self.node_size + 1) >> 1);
+
+      let lat_key = *lk.first().unwrap();
 
       let latter = Self {
          node_size: self.node_size,
-         keys:      lk.to_vec(),
-         values:    lv.to_vec(),
+         keys:      lk,
+         values:    lv, //.to_vec(),
          next:      self.next.clone(),
       };
 
       let lat_box = Box::new(latter);
-      let lat_key = *lat_box.clone().first_key();
 
       let former = Self {
          node_size: self.node_size,
