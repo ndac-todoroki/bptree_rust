@@ -86,6 +86,8 @@ InternalNode::new_by_nodes(self.node_size, node1, node2, key);
 
    /// lookups for a key by the given
    pub fn lookup(&self, key: Key) -> Option<Value> { self.root.lookup(key) }
+
+   pub fn height(&self) -> usize { self.root.height() }
 }
 
 // print! などの際につかうフォーマッタ定義
