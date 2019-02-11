@@ -26,7 +26,6 @@ pub struct InternalNode {
 
 impl fmt::Display for InternalNode {
    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-      use std::ops::Deref;
       let pointers = self.pointers.borrow();
       let keys = &self.keys;
 
