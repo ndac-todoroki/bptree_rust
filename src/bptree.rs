@@ -8,11 +8,11 @@
 //! documentation when working with the crate from your project.
 //!
 //! ```
-//! use bptree::BPTree;
+//! use bptree::BPlusTree;
 //!
 //! // a tree with a node size of 5
 //! // this must be mutable; unless you don't want to change anything
-//! let mut tree = BPTree::new(5);
+//! let mut tree = BPlusTree::new(5);
 //!
 //! tree.insert(2, 200); // key and value
 //!
@@ -24,18 +24,19 @@
 //! ```
 //!
 //! # Printing
-//! You can also print/format trees. Debug formatting are dereived from `std`
+//! You can also print/format trees. Debug formatting are derived from `std`
 //! and `core` crates. Take the example below:
 //!
 //! ```
-//! let mut tree = BPTree::new(4);
-//! tree.insert(1);
-//! tree.insert(3);
-//! tree.insert(5);
-//! tree.insert(2);
-//! tree.insert(4);
-//! tree.insert(6);
-//! tree.insert(8);
+//! # use bptree::BPlusTree;
+//! let mut tree = BPlusTree::new(4);
+//! tree.insert(1, 1);
+//! tree.insert(3, 2);
+//! tree.insert(5, 3);
+//! tree.insert(2, 4);
+//! tree.insert(4, 5);
+//! tree.insert(6, 6);
+//! tree.insert(8, 7);
 //!
 //! print!("{}", tree);
 //! ```
