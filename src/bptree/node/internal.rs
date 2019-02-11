@@ -47,13 +47,18 @@ impl InternalNode {
    }
 
    /// Creates a new `InternalNode` by passing two child node `Box`es.
-   pub fn new_by_nodes(node_size: usize, node1: Box<NodeType>, node2: Box<NodeType>, seperator_key: usize) -> Self {
+   pub fn new_by_nodes(
+      node_size: usize,
+      node1: Box<NodeType>,
+      node2: Box<NodeType>,
+      separator_key: usize,
+   ) -> Self {
       let mut pointers = Vec::with_capacity(node_size);
       pointers.push(node1);
 
       InternalNode {
          node_size,
-         keys: vec![seperator_key],
+         keys: vec![separator_key],
          pointers: RefCell::new(pointers),
          greater: RefCell::new(node2),
       }
@@ -205,7 +210,7 @@ impl Node for InternalNode {
          (
             Box::new(NodeType::Int(former)),
             Box::new(NodeType::Int(latter)),
-            fkl
+            fkl,
          )
       }
    }
@@ -228,6 +233,7 @@ mod tests {
       ex_node2.insert(10, 1000);
       ex_node2.insert(50, 5000);
 
+      let sep_key = *ex_node2.keys.first().unwrap();
       let box2 = Box::new(ex_node2);
       ex_node1.next = Some(box2.clone());
 
@@ -235,6 +241,7 @@ mod tests {
          n,
          Box::new(NodeType::Ext(ex_node1)),
          Box::new(NodeType::Ext(*box2)),
+         sep_key,
       )
       // [ <-ex_node1 | 10 | <-ex_node2 ]
    }
@@ -270,4 +277,3 @@ mod tests {
       assert_eq!(None, node.lookup(99));
    }
 }
-

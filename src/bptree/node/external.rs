@@ -125,9 +125,6 @@ impl Node for ExternalNode {
       lk.reserve(self.node_size);
       lv.reserve(self.node_size);
 
-      // let (fk, lk) = self.keys.split_at((self.node_size + 1) >> 1);
-      // let (fv, lv) = self.values.split_at((self.node_size + 1) >> 1);
-
       let lat_key = *lk.first().unwrap();
 
       let latter = Self {
@@ -149,7 +146,7 @@ impl Node for ExternalNode {
       (
          Box::new(NodeType::Ext(former)),
          Box::new(NodeType::Ext(*lat_box)),
-         lat_key
+         lat_key,
       )
    }
 }

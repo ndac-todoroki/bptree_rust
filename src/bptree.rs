@@ -1,31 +1,32 @@
 //! A module representing the whole B+-Tree.
 //!
-//! This module includes the B+-Tree struct, and function implementations to add/lookup items of it.
+//! This module includes the B+-Tree struct, and function implementations to
+//! add/lookup items of it.
 //!
 //! # Usage Examples
-//! The usages below are for this module; You should be looking for the crate documentation
-//! when working with the crate from your project.
+//! The usages below are for this module; You should be looking for the crate
+//! documentation when working with the crate from your project.
 //!
 //! ```
 //! use bptree::BPTree;
-//! 
+//!
 //! // a tree with a node size of 5
 //! // this must be mutable; unless you don't want to change anything
 //! let mut tree = BPTree::new(5);
-//! 
-//! tree.insert(2, 200);  // key and value
-//! 
+//!
+//! tree.insert(2, 200); // key and value
+//!
 //! let result1 = tree.lookup(2);
 //! let result2 = tree.lookup(4);
-//! 
+//!
 //! assert_eq!(Some(200), result1);
 //! assert_eq!(None, result2);
 //! ```
-//! 
+//!
 //! # Printing
-//! You can also print/format trees. Debug formatting are dereived from `std` and `core` crates.
-//! Take the example below:
-//! 
+//! You can also print/format trees. Debug formatting are dereived from `std`
+//! and `core` crates. Take the example below:
+//!
 //! ```
 //! let mut tree = BPTree::new(4);
 //! tree.insert(1);
@@ -35,24 +36,24 @@
 //! tree.insert(4);
 //! tree.insert(6);
 //! tree.insert(8);
-//! 
+//!
 //! print!("{}", tree);
 //! ```
-//! 
+//!
 //! and it will print like:
-//! 
+//!
 //! ```ignore
 //! [[1, 2], [3, 4], [5, 6, 8]]
 //! ```
-//! 
+//!
 //! You can always pretty debug with `print!("{:#?}", tree)` too.
 
 mod node;
 
 use std::fmt;
 
+use self::node::InsertResult;
 pub use self::node::{ExternalNode, InternalNode, Key, Node, NodeType, Value};
-use self::node::{InsertResult};
 
 #[derive(Debug, Clone)]
 pub struct BPlusTree {
@@ -75,8 +76,7 @@ impl BPlusTree {
          Ok(Open) => Ok(()),
          Ok(Full) => {
             let (node1, node2, key) = self.root.meiosis();
-            let new_root = 
-InternalNode::new_by_nodes(self.node_size, node1, node2, key);
+            let new_root = InternalNode::new_by_nodes(self.node_size, node1, node2, key);
             self.root = NodeType::Int(new_root);
             Ok(())
          },
