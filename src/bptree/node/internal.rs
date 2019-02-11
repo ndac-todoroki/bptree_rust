@@ -28,11 +28,12 @@ impl fmt::Display for InternalNode {
    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
       use std::ops::Deref;
       let pointers = self.pointers.borrow();
+      let keys = &self.keys;
 
       write!(f, "[")?;
-      for pointer in pointers.deref() {
-         pointer.fmt(f)?;
-         write!(f, ", ")?;
+      for i in 0..pointers.len() {
+         pointers[i].fmt(f)?;
+         write!(f, "{}", keys[i])?;
       }
       self.greater.borrow().fmt(f)?;
       write!(f, "]")?;
